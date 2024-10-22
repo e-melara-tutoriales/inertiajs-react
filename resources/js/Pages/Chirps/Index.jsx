@@ -1,10 +1,22 @@
-import Authenticated from "@/Layouts/AuthenticatedLayout.jsx";
+import { Head, useForm } from "@inertiajs/react";
+import { useState } from 'react';
 
-import { Head, Link } from "@inertiajs/react";
+import Authenticated from "@/Layouts/AuthenticatedLayout.jsx";
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
+import InputError from "@/Components/InputError.jsx";
 
 export default function ChirpIndex(props) {
     const { title, subtitle, auth } = props;
+    const { data, setData, post, processing, errors, reset } = useForm({
+        message: '',
+    })
+
+    const handlerSubmit = (event) => {
+        event.preventDefault();
+        post(route('chirps.store'), {
+            onSuccess: () => reset(),
+        })
+    }
 
     return (
         <Authenticated
@@ -19,12 +31,19 @@ export default function ChirpIndex(props) {
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900 dark:text-gray-100">
-                            <form>
+                            <form
+                                onSubmit={handlerSubmit}
+                            >
                                 <textarea
+                                    value={data.message}
+                                    onChange={(event) => setData('message', event.target.value)}
                                     className={"block w-full rounded-md border-gray-300 bg-white bg-color-200 dark:bg-gray-700 dark:border-gray-600"}
                                     placeholder={"What's on your mind?"}
-                                ></textarea>
-                                <PrimaryButton className={'mt-2'}>Chirps</PrimaryButton>
+                                />
+                                <InputError message={errors.message} />
+                                <PrimaryButton disabled={processing} className={'mt-2'}>
+                                    {processing ? 'Posting...' : 'Post'}
+                                </PrimaryButton>
                             </form>
                         </div>
                     </div>
