@@ -1,4 +1,4 @@
-import { Head, useForm } from "@inertiajs/react";
+import {Head, useForm, usePage} from "@inertiajs/react";
 import { useState } from 'react';
 
 import Authenticated from "@/Layouts/AuthenticatedLayout.jsx";
@@ -10,11 +10,11 @@ export default function ChirpIndex(props) {
     const { data, setData, post, processing, errors, reset } = useForm({
         message: '',
     })
-
     const handlerSubmit = (event) => {
         event.preventDefault();
         post(route('chirps.store'), {
             onSuccess: () => reset(),
+            preserveState: false,
         })
     }
 

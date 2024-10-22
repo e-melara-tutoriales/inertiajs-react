@@ -28,5 +28,7 @@ class ChirpController extends Controller
         $request->user()->chirps()->create([
             'message' => $request->input('message')
         ]);
+
+        return back()->with('status', __('Chirp created!'));
     }
 }
