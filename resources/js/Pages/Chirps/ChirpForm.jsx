@@ -1,8 +1,9 @@
 import { useForm } from "@inertiajs/react";
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
 import InputError from "@/Components/InputError.jsx";
+import SecondaryButton from "@/Components/SecondaryButton";
 
-export default function ChirpForm({ className, chirp }) {
+export default function ChirpForm({ className, chirp, setEditing }) {
   const { data, setData, post, patch, processing, errors, reset } = useForm({
     message: chirp ? chirp?.message : "",
   });
@@ -39,6 +40,9 @@ export default function ChirpForm({ className, chirp }) {
       <PrimaryButton disabled={processing} className={'mt-2'}>
         {processing ? 'Posting...' : 'Post'}
       </PrimaryButton>
+      {chirp?.id && (
+        <SecondaryButton className="ml-2" onClick={setEditing}>Cancelar</SecondaryButton>
+      )}
     </form>
   );
 }

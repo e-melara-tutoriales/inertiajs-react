@@ -25,7 +25,7 @@ export default function ChirpIndex(props) {
           </div>
           <div className={'mt-6 bg-white dark:bg-gray-800 shadow-md rounded-lg divide-y'}>
             {chirpsList.map((chirp) => (
-                <ChirpItem key={chirp.id} chirp={chirp} />
+                <ChirpItem key={chirp.id} chirp={chirp} auth={auth} />
             ))}
           </div>
         </div>

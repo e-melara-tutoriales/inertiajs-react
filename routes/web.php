@@ -7,7 +7,7 @@ use App\Http\Controllers\ProfileController;
 use Inertia\Inertia;
 
 Route::resource('chirps', ChirpController::class)
-    ->only(['index', 'store', 'update']);
+    ->only(['index', 'store', 'update', 'destroy']);
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
