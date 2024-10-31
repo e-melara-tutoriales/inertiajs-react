@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ChirpResource;
+use App\Models\Chirp;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class ChirpController extends Controller
 {
@@ -14,21 +17,25 @@ class ChirpController extends Controller
 
     public function index()
     {
+        $chirps = Chirp::with('user:id,name')->latest()->get();
         return Inertia::render('Chirps/Index', [
-           'title' => 'Chirps',
-           'subtitle' => 'A list of chirps',
+           'chirps' => ChirpResource::collection($chirps),
        ]);
     }
 
     public function store(Request $request) {
-        $request->validate([
+        $validated = $request->validate([
             'message' => 'required|string|max:255'
         ]);
-
-        $request->user()->chirps()->create([
-            'message' => $request->input('message')
-        ]);
-
+        $request->user()->chirps()->create($validated);
         return back()->with('status', __('Chirp created!'));
+    }
+
+    public function update(Request $request, Chirp $chirp) {
+        $validated = $request->validate([
+            'message' => 'required|string|max:255'
+        ]);
+        $chirp->update($validated);
+        return back()->with('status', __('Chirp updated!'));
     }
 }
